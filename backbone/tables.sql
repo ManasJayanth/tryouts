@@ -8,3 +8,5 @@ create table DATA(
 	src varchar(32),
 	description varchar(128)
 );
+
+INSERT INTO DATA VALUES(1, 'Smartphones', 'img/mobile.png', 'A smartphone in hand');
