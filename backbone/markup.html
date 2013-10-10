@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <script type="text/javascript"
+    src="lib/jquery.js">
+    </script>
+    <script type="text/javascript"
+    src="lib/underscore.js">
+    </script>
+    <script type="text/javascript"
+    src="lib/backbone.js">
+    </script>
+  </head>
+  <body>
+    <div id="img-data">
+    </div>
+ <!--    <script type="text/javascript">
+	// CertificateView = Backbone.View.extend({
+	// 	initialize: function () {
+	// 		this.render();
+	// 	},
+	// 	render: function () {
+	// 		$(this.el).html("<h1>Guy Incognito</h1><p>DOB: March 2, 1967</p>");
+	// 	}
+	// });
+	// var certificate_view = new CertificateView({
+	// 	el: $("#certificate")
+	// });
+     </script> -->
+
+	<script type="text/javascript">
+
+	AjaxReq = function (){
+		this.send = sendData;
+		this.rec = recData;
+	}
+
+	function sendData(str) {
+		$("#img-data").html('<img style="margin-left: 50%" src="img/ajax-loader.gif"  alt="Creating..." />');
+		$.ajax({
+		   type: "POST",
+		   url: "php/serverajax.php",
+		   data: {  'function': 'sendData',
+					'data': str
+					},
+		   dataType: "json",
+		
+		   success: function(data){
+		   	$("#img-data").replaceWith("<div id='img-data'> " + data['result'] + "</div>");
+		   },
+		   error: function(xhr, textStatus, errorThrown) {
+					alert('An error occurred! ' + ( errorThrown ? errorThrown :
+					xhr.status ));
+		   }
+		});
+	}
+	function recData() {
+		$.ajax({
+			type: "POST",
+			url: "php/serverajax.php",
+			data: {'function': 'recData'},
+			dataType: "json",
+
+			success: function(data){
+				console.log('Data received');
+			},
+			error: function(xhr, textStatus, errorThrown) {
+					alert('An error occurred! ' + ( errorThrown ? errorThrown :
+					xhr.status ));
+			}
+		});
+	}
+
+	function getimgs(){
+		var obj = new AjaxReq();
+		obj.rec();
+	}
+	</script>
+	<button onclick='getimgs()'> Get Images</button>
+  </body>
+</html>
