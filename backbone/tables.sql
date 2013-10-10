@@ -1,3 +1,7 @@
+create schema backboneImgGallery;
+
+use backboneImgGallery;
+
 create table DATA(
 	id int primary key,
 	name varchar(32),
