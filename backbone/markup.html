@@ -27,6 +27,8 @@
 	// });
      </script> -->
 
+	<!--
+	Without Backbone
 	<script type="text/javascript">
 
 	AjaxReq = function (){
@@ -38,7 +40,7 @@
 		$("#img-data").html('<img style="margin-left: 50%" src="img/ajax-loader.gif"  alt="Creating..." />');
 		$.ajax({
 		   type: "POST",
-		   url: "php/serverajax.php",
+		   url: "serverajax.php",
 		   data: {  'function': 'sendData',
 					'data': str
 					},
@@ -56,12 +58,12 @@
 	function recData() {
 		$.ajax({
 			type: "POST",
-			url: "php/serverajax.php",
+			url: "serverajax.php",
 			data: {'function': 'recData'},
 			dataType: "json",
 
 			success: function(data){
-				console.log('Data received');
+				$("#img-data").replaceWith("<div id='img-data'> " + data['result'] + "</div>");
 			},
 			error: function(xhr, textStatus, errorThrown) {
 					alert('An error occurred! ' + ( errorThrown ? errorThrown :
@@ -74,7 +76,7 @@
 		var obj = new AjaxReq();
 		obj.rec();
 	}
-	</script>
+	</script> -->
 	<button onclick='getimgs()'> Get Images</button>
   </body>
 </html>
