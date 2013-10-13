@@ -13,23 +13,7 @@
   <body>
     <div id="img-data">
     </div>
- <!--    <script type="text/javascript">
-	// CertificateView = Backbone.View.extend({
-	// 	initialize: function () {
-	// 		this.render();
-	// 	},
-	// 	render: function () {
-	// 		$(this.el).html("<h1>Guy Incognito</h1><p>DOB: March 2, 1967</p>");
-	// 	}
-	// });
-	// var certificate_view = new CertificateView({
-	// 	el: $("#certificate")
-	// });
-     </script> -->
-
-	<!--
-	Without Backbone
-	<script type="text/javascript">
+    <script type="text/javascript">
 
 	AjaxReq = function (){
 		this.send = sendData;
@@ -55,7 +39,7 @@
 		   }
 		});
 	}
-	function recData() {
+	function recData(callback) {
 		$.ajax({
 			type: "POST",
 			url: "serverajax.php",
@@ -63,7 +47,10 @@
 			dataType: "json",
 
 			success: function(data){
-				$("#img-data").replaceWith("<div id='img-data'> " + data['result'] + "</div>");
+				// model.src = 
+				// $("#img-data").replaceWith("<div id='img-data'> " + data['result'][0] + "</div>");
+				console.log('Successfully received data');
+				callback(data);
 			},
 			error: function(xhr, textStatus, errorThrown) {
 					alert('An error occurred! ' + ( errorThrown ? errorThrown :
@@ -71,12 +58,40 @@
 			}
 		});
 	}
+	</script>
+    <script type="text/javascript">
+	var Photo = Backbone.Model.extend({
+		defaults: {
+			src: '',
+			title: '',
+			description: '',
+			coordinates: [0,0]
+		},
+		initialize: function(){
+			this.on("change:src", function(){
+			});
+		}
+	});
 
-	function getimgs(){
-		var obj = new AjaxReq();
-		obj.rec();
-	}
-	</script> -->
-	<button onclick='getimgs()'> Get Images</button>
+	var PhotoCollection = Backbone.Collection.extend({
+		model: Photo
+	});
+	// var photoCollection = new PhotoCollection();
+	photoCollection.on("add", function(photo) {
+	console.log('New model added');
+	});
+	photoCollection.add([somePhoto]);
+	var obj = new AjaxReq();
+	var models = [];
+	obj.rec(function(data){
+
+		for (var i = 0; i < data.length; i++) {
+			models[i] = new new Photo({ src: data[i].src, title: data.name[i], description: data[0].description});
+		};
+		var photoCollection = new PhotoCollection(models);
+
+	});
+     </script>	
+	<!--<button onclick='getimgs()'> Get Images</button> -->
   </body>
 </html>

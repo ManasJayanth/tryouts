@@ -20,11 +20,12 @@ function fetchImage($data) {
 	$success = $pstatement->execute();
 	$results = $pstatement->fetchAll();
 
-	$temp = array();
-	for ($i=0; $i < $num; $i++) { 
-		$temp[$i] = json_encode($results[$i]);
-	}
-	return $temp;
+	// $temp = array();
+	// for ($i=0; $i < $num; $i++) { 
+	// 	$temp[$i] = json_encode($results[$i]);
+	// }
+	// return $temp;
+	return $results;
 }
 
 $function = $_POST['function'];    

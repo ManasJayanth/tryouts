@@ -10,3 +10,4 @@ create table DATA(
 );
 
 INSERT INTO DATA VALUES(1, 'Smartphones', 'img/mobile.png', 'A smartphone in hand');
+INSERT INTO DATA VALUES(2, 'Friends', 'img/friends4.jpg', 'Friends cast');
