@@ -46,7 +46,7 @@ a:visited {
 	text-align: center;
 	margin: 10px 0;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 30px;
+	font-size: 50px;
 	font-weight: bolder;
 }
 #logo img {
@@ -94,7 +94,7 @@ a:visited {
 	height:auto;
 	position: relative;
 	/** menu is 30px tall. Giving an additional padding of 5px - hence 35px */
-	padding: 35px 0;
+	padding: 35px 0 600px;
 }
 
 
@@ -119,22 +119,15 @@ a:visited {
 	font-weight: 400;
 }
 
-#carousel-photos-generic {
-	/*position: relative;*/
-	/*top: -100px;*/
-	width: 60%;
-	margin: 0px 0px 0px auto;
+#slider img {
+	float: right;
 }
 
-.carousel-control.left {
-  
+#slider p {
+	text-align: justify;
+	margin: 0px;
+	padding-right: 15px;
 }
-
-.carousel-control.right {
-  right: 0;
-  left: auto;
-}
-
 /* Slide 2 */ 
 
 #slide2{
