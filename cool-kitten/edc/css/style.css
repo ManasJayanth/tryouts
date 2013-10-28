@@ -43,17 +43,25 @@ a:visited {
 	z-index:100;
 }
 #logo {
-	text-align: center;
+	text-align: justify;
 	margin: 10px 0;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 50px;
 	font-weight: bolder;
 }
-#logo img {
+/*#logo img {
 	display: block;
 	float: left;
 	height: 15%;
 	width: 15%;
+}*/
+#edc, #edc-description {
+	padding: 0px 0px 0px 0px;
+	color: #ffffff;
+}
+#homepage {
+	padding-bottom: 100px;
+	background-color: rgba(0,0,0,0.8);
 }
 #nav {
 	font-weight: bold;
@@ -102,27 +110,25 @@ a:visited {
 /* Slide 1 */ 
 
 #slide1{
-	background-color:#FFFFFF;
+	background-image: url('../images/background.jpg');
 }
+
 #slide1 h1 {
 	font-size: 3.8em;
 	letter-spacing: -3px;
 	line-height: 0px;
-	color:#59473C;
+	color:#FFFFFF;
 	font-weight: 700;
 }
 #slide1 h2 {
 	font-size: 2em;
-	color: #59473C;
+	color: #FFFFFF;
 	line-height: 0px;
 	padding-bottom:20px;
 	font-weight: 400;
 }
 
 #slider #imgs {
-	float: right;
-	margin-top: 15px;
-	height: 350px;
 	text-align: center;
 	vertical-align: center;
 	color: white;
