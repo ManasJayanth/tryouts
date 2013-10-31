@@ -57,7 +57,7 @@ function visualize (dataset) {
 			.enter()
 			.append('line')
 			.style('stroke', function(d){
-				return 'rgb(' + parseInt(255*d) + ',0,0)';
+				return 'rgb(255,' + parseInt(255*d) + ',255)';
 			})
 			.style('stroke-width', 2)
 			.attr('x1', function(d, i, j){
