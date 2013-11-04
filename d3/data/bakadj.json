@@ -1,0 +1,52 @@
+{
+    "categories": [
+        "A",
+        "B",
+        "C",
+        "D"
+    ],
+    "values": [
+        {
+            "from": "A",
+            "to": "A",
+            "messages": 10,
+            "color": "red",
+            "tooltip": "test 1"
+        },
+        {
+            "from": "A",
+            "to": "B",
+            "messages": 30,
+            "color": "green",
+            "tooltip": "test 2"
+        },
+        {
+            "from": "A",
+            "to": "C",
+            "messages": 40,
+            "color": "blue",
+            "tooltip": "test 3"
+        },
+        {
+            "from": "B",
+            "to": "D",
+            "messages": 10,
+            "color": "red",
+            "tooltip": "test 1"
+        },
+        {
+            "from": "B",
+            "to": "B",
+            "messages": 30,
+            "color": "green",
+            "tooltip": "test 2"
+        },
+        {
+            "from": "B",
+            "to": "C",
+            "messages": 40,
+            "color": "blue",
+            "tooltip": "test 3"
+        }
+    ]
+}
