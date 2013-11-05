@@ -56,21 +56,34 @@ Pyk.Adjacency = function (options){
                             // console.log(d3.select(this));
                          })
                          .style("fill", function(d, i){
-                            return d.color;
+                            return "rgba(0, 0, 0, 0.4)";//d.color;
                          })
                          .style("stroke", '#555')
                          .on("mouseover", function(d, i){
                             d3.select("#adj-tooltip").html(d.tooltip);
-                            d3.select("#adj-tooltip").style("visibility", "visible");
                           })
                           .on("mousemove", function(){
                               var yReduce = parseInt(d3.select("#adj-tooltip").style("height")) + 40;
                               var xReduce = parseInt(d3.select("#adj-tooltip").style("width")) / 2;
+                              d3.select("#adj-tooltip").style("visibility", "visible");
                               d3.select("#adj-tooltip").style("top", (d3.event.pageY- yReduce)+"px").style("left",(d3.event.pageX-xReduce)+"px");
                           })
                           .on("mouseout", function(){
                             d3.select("#adj-tooltip").style("visibility", "hidden");
-                          });
+                          }).
+                          transition()
+                          .ease('bounce')
+                          .delay(function (d, i, j) {
+                            var rand = Math.random();
+                            if (rand > 0.65) {
+                              return (i + j) * 100 * rand;
+                            } else{
+                              return (i + j) * 100;
+                            };
+                          })
+                          .style("fill", function(d, i){
+                            return d.color;
+                         });
 
 
 
