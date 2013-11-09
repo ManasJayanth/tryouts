@@ -191,7 +191,9 @@ a:visited {
 	font-size: 2em;
 	font-weight: 400;
 }
-
+#slide3 p {
+	margin-top: 20px;
+}
 
 
 
