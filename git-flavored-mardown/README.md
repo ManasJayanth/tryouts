@@ -1,7 +1,6 @@
-# Converting Git Flavored Markdown to HTML
+psacrifice-wp-theme
+===================
 
-## Running the code
+A custom theme for wordpress
 
-		$ node app
-
-A browser window will open with the markdown file converted to html
+## To do
