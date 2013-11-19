@@ -31,6 +31,7 @@ for(var i = 0; i < node.getElementsByTagName('path').length; ++i) {
     var Path = node.getElementsByTagName('path')[i].getAttribute('d');
     var ny = group.append('path')
     .attr('d', Path)
+    .attr('id', i)
     .style('fill', 'grey')
     .style('stroke', 'black')
     .style('stroke-width', 1)
