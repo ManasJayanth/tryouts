@@ -146,13 +146,6 @@
             <td>61.56</td>
         </tr>
 
-        <tr>
-            <td>9</td>
-
-            <td>Bangalore South</td>
-
-            <td>74.84</td>
-        </tr>
 
         <tr>
             <td>25</td>
@@ -162,13 +155,6 @@
             <td>59.51</td>
         </tr>
 
-        <tr>
-            <td>10</td>
-
-            <td>Bangalore North</td>
-
-            <td>74.63</td>
-        </tr>
 
         <tr>
             <td>26</td>
@@ -260,3 +246,21 @@
         </tr>
     </tbody>
 </table>
+
+
+<!--
+	    <tr>
+            <td>10</td>
+
+            <td>Bangalore North</td>
+
+            <td>74.63</td>
+        </tr>
+
+        <tr>
+            <td>9</td>
+
+            <td>Bangalore South</td>
+
+            <td>74.84</td>
+        </tr>

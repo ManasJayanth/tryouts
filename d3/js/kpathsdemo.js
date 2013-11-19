@@ -1,39 +1,9 @@
 /**
 * Code to pare the d attribute form the SVG map of Karnataka
 */
+
+
 $('#viz-container').html('<button type="button" id="next">Next</button>');
-var Districts = [
-'Bidar',
-'Yadgir',
-'Gulbarga',
-'Belgaum',
-'Bellary',
-'Chikballapur',
-'Kolar',
-'Chikmangaluru',
-'Hassan',
-'Ramnagara',
-'Bangalore Rural',
-'Bangalore Urban',
-'Mandya',
-'Kodagu',
-'Tumkur',
-'Raichur',
-'Koppal',
-'Bagalkot',
-'Bijapur',
-'Dharwad',
-'Haveri',
-'Gadag',
-'DK',
-'Mysore',
-'Chamrajnagar',
-'Shimoga',
-'Davangere',
-'Chitradurga',
-'N Canara',
-'Udupi'
-];
 var tooltip = d3.select("body")
     .append("div").attr("id", "pyk-bubble-tooltip")
     .style("position", "absolute")
@@ -67,35 +37,49 @@ svg.attr('width', w)
     .attr('height', h);
 
 
-var node = xmlDoc.getElementById('ka');
-var districtPaths = [];
-var nodes = node.getElementsByTagName('path')
-for(var i = 0; i < nodes.length; ++i) {
-    districtPaths[i] = nodes[i].getAttribute('d');
+function mover() {
+    return tooltip.html('').style("visibility", "visible");
 }
-console.log(districtPaths);
+var node = xmlDoc.getElementById('ka');
+console.log(node);
 
-var ny = group
-    .selectAll('path')
-    .data(districtPaths)
-    .enter()
-    .append('path')
-    .attr('d', function (d, i) {
-        return d;
-    })
-    .attr('id', function (d, i){
-        return i;
-    })
+var i = 0;
+$('#next').on('click', function(){
+    var Path = node.getElementsByTagName('path')[i++].getAttribute('d');
+        var ny = group.append('path')
+        .attr('d', Path)
+        .attr('id', i)
+        .style('fill', 'grey')
+        .style('stroke', 'black')
+        .style('stroke-width', 1)
+        .attr('transform', 'scale(0.2)')
+        .on("mouseover", mover)
+        
+        .on("mousemove", function () {
+            return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
+        })
+
+        .on("mouseout", function () {
+            return tooltip.style("visibility", "hidden");
+        })
+})
+/*
+for(var i = 0; i < node.getElementsByTagName('path').length; ++i) {
+    var Path = node.getElementsByTagName('path')[i].getAttribute('d');
+    ny[i] = group.append('path')
+    .attr('d', Path)
+    .attr('id', i)
     .style('fill', 'grey')
     .style('stroke', 'black')
     .style('stroke-width', 1)
     .attr('transform', 'scale(0.2)')
-    .on("mouseover", function (d, i) {
-        return tooltip.html(Districts[i]).style("visibility", "visible");
-    })    
+    .on("mouseover", mover)
+    
     .on("mousemove", function () {
         return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
     })
+
     .on("mouseout", function () {
         return tooltip.style("visibility", "hidden");
     })
+}*/
