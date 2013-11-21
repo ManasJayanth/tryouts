@@ -18,9 +18,14 @@
 <script src="lib/jquery.js"></script>
 <script src="lib/bootstrap.js"></script>
 <script>
+
+//---- List of Countries
 var countries = ['Afghanistan','Albania','Algeria','American Samoa','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas',' The','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bermuda','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cambodia','Cameroon','Canada','Cape Verde','Cayman Islands','Central African Republic','Chad','Channel Islands','Chile','China','Colombia','Comoros','Congo',' Dem. Rep.','Congo',' Rep.','Costa Rica','Côte d\'Ivoire','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt',' Arab Rep.','El Salvador','Equatorial Guinea','Eritrea','Estonia','Ethiopia','Faeroe Islands','Fiji','Finland','France','French Polynesia','Gabon','Gambia',' The','Georgia','Germany','Ghana','Gibraltar','Greece','Greenland','Grenada','Guam','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong SAR',' China','Hungary','Iceland','India','Indonesia','Iran',' Islamic Rep.','Iraq','Ireland','Isle of Man','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Korea',' Dem. Rep.','Korea',' Rep.','Kosovo','Kuwait','Kyrgyz Republic','Lao PDR','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macao SAR',' China','Macedonia',' FYR','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mayotte','Mexico','Micronesia',' Fed. Sts.','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nepal','Netherlands','Netherlands Antilles','New Caledonia','New Zealand','Nicaragua','Niger','Nigeria','Northern Mariana Islands','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Puerto Rico','Qatar','Romania','Russian Federation','Rwanda','Samoa','San Marino','São Tomé and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovak Republic','Slovenia','Solomon Islands','Somalia','South Africa','Spain','Sri Lanka','St. Kitts and Nevis','St. Lucia','St. Vincent and the Grenadines','Sudan','Suriname','Swaziland','Sweden','Switzerland','Syrian Arab Republic','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Turks and Caicos Islands','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Venezuela',' RB','Vietnam','Virgin Islands (U.S.)','West Bank and Gaza','Yemen',' Rep.','Zambia','Zimbabwe'];
 
+//----- DOM element where the map is attached
 var DOMele = "body";
+
+//----- Adding tooltip to the DOM
 $("#world-tooltip").remove();
 d3.select(DOMele)
     .append("div").attr("id","world-tooltip")
@@ -34,19 +39,22 @@ d3.select(DOMele)
     .text("a simple tooltip");
 
 
+//----- Obtaining default width and setting height to 1160 (just a convenient number)
 var width = parseInt($(DOMele).css('width')),
     height = 1160;
 
+//----- SVG holder
 var svg = d3.select(DOMele).append("svg")
     .attr("width", width)
     .attr("height", height);
 
+//----- Title
 svg.append('text')
 	.text('Remittances flowing from Afghanistan')
 	.attr('x', 100)
 	.attr('y', 35);
 
-
+//----- Legends
 var legends = svg.append('g')
 	.attr('transform', 'translate(' + parseInt(width - 400) + ',15)');
 	
@@ -83,20 +91,27 @@ legends.append('text')
 	.attr('x', 220)
 	.attr('y', 20);
 
+
+//---- Map projection configuration
 var projection = d3.geo.mercator()
     .scale(200)
     .translate([width / 2, height / 2]);
 
+//---- Path generator
 var path = d3.geo.path()
     .projection(projection);
 
+//---- Reading Data file
 d3.csv('data/output2.csv', function (dataset){
 	//remittance from afghanistan
 	var afg = [];
 	for(var i = 0; i < dataset.length; ++i){
-		afg[i] = dataset[i][countries[0]];
+		afg[i] = dataset[i][countries[0]]; // Afghanistan is in countries[0] Likewise for other countries, just change the index of the array countries
 	}
+	//---- Setting up the color scale
 	var color = d3.scale.linear().domain([d3.min(afg),d3.max(afg)]).range(['#59473C', '#B3BF56']);
+
+	//--- Reading TopoJSON file
 	d3.json("data/world.json", function (error, world) {
 		svg.selectAll("path")
 			.data(topojson.feature(world, world.objects.places).features)
@@ -104,13 +119,16 @@ d3.csv('data/output2.csv', function (dataset){
 			.attr("d", path)
 			.attr('fill', function (d, i) {
 				var index = countries.indexOf(d.properties.name);
+				// If Country name according to TopoJSON file is the found in countries list, apply color scale
 				if (index != -1 && index < afg.length) {
 					return color(afg[index]);
 				}
+				// else undefined, hence return red
 				else {
 					return 'red';
 				}
 			})
+			// Associating tooltip to mouse events
 			.on("mouseover", function(d, i){
                 var tooltip = d3.select("#world-tooltip");
                 tooltip.html('<div>' + d.properties.name + '</div>' + '<div>' + afg[countries.indexOf(d.properties.name)] + '</div>');
@@ -127,6 +145,7 @@ d3.csv('data/output2.csv', function (dataset){
                 tooltip.style("visibility", "hidden");
             });
 
+        //---- Drawing boundaries from topology mesh
         svg.append("path")
 		    .datum(topojson.mesh(world, world.objects.places))
 		    .attr("d", path)
