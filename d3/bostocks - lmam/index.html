@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<style>
+.subunit-boundary {
+	fill: none;
+	stroke: #777;
+	stroke-dasharray: 2,2;
+	stroke-linejoin: round;
+}
+</style>
+<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+<title>My map</title>
+</head>
+<body>
+<script src="lib/d3.js"></script>
+<script src="lib/topojson.js"></script>
+<script src="lib/jquery.js"></script>
+<script src="lib/bootstrap.js"></script>
+<script>
+var countries = ['Afghanistan','Albania','Algeria','American Samoa','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas',' The','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bermuda','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cambodia','Cameroon','Canada','Cape Verde','Cayman Islands','Central African Republic','Chad','Channel Islands','Chile','China','Colombia','Comoros','Congo',' Dem. Rep.','Congo',' Rep.','Costa Rica','Côte d\'Ivoire','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt',' Arab Rep.','El Salvador','Equatorial Guinea','Eritrea','Estonia','Ethiopia','Faeroe Islands','Fiji','Finland','France','French Polynesia','Gabon','Gambia',' The','Georgia','Germany','Ghana','Gibraltar','Greece','Greenland','Grenada','Guam','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong SAR',' China','Hungary','Iceland','India','Indonesia','Iran',' Islamic Rep.','Iraq','Ireland','Isle of Man','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Korea',' Dem. Rep.','Korea',' Rep.','Kosovo','Kuwait','Kyrgyz Republic','Lao PDR','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macao SAR',' China','Macedonia',' FYR','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mayotte','Mexico','Micronesia',' Fed. Sts.','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nepal','Netherlands','Netherlands Antilles','New Caledonia','New Zealand','Nicaragua','Niger','Nigeria','Northern Mariana Islands','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Puerto Rico','Qatar','Romania','Russian Federation','Rwanda','Samoa','San Marino','São Tomé and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovak Republic','Slovenia','Solomon Islands','Somalia','South Africa','Spain','Sri Lanka','St. Kitts and Nevis','St. Lucia','St. Vincent and the Grenadines','Sudan','Suriname','Swaziland','Sweden','Switzerland','Syrian Arab Republic','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Turks and Caicos Islands','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Venezuela',' RB','Vietnam','Virgin Islands (U.S.)','West Bank and Gaza','Yemen',' Rep.','Zambia','Zimbabwe'];
+
+var DOMele = "body";
+$("#world-tooltip").remove();
+d3.select(DOMele)
+    .append("div").attr("id","world-tooltip")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .style("background", "#fff")
+    .style("padding", "10px 20px")
+    .style("box-shadow", "0 0 10px #000")
+    .style("border-radius", "5px")
+    .text("a simple tooltip");
+
+
+var width = parseInt($(DOMele).css('width')),
+    height = 1160;
+
+var svg = d3.select(DOMele).append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append('text')
+	.text('Remittances flowing from Afghanistan')
+	.attr('x', 100)
+	.attr('y', 35);
+
+
+var legends = svg.append('g')
+	.attr('transform', 'translate(' + parseInt(width - 400) + ',15)');
+	
+legends.append('circle')
+	.attr('cx', 0)
+	.attr('cy', 15)
+	.attr('r', 5)
+	.attr('fill', '#59473C');
+
+legends.append('text')
+	.text('Low')
+	.attr('x', 20)
+	.attr('y', 20);
+
+legends.append('circle')
+	.attr('cx', 100)
+	.attr('cy', 15)
+	.attr('r', 5)
+	.attr('fill', '#B3BF56');
+
+legends.append('text')
+	.text('High')
+	.attr('x', 120)
+	.attr('y', 20);
+
+legends.append('circle')
+	.attr('cx',200)
+	.attr('cy', 15)
+	.attr('r', 5)
+	.attr('fill', 'red');
+
+legends.append('text')
+	.text('Undefined')
+	.attr('x', 220)
+	.attr('y', 20);
+
+var projection = d3.geo.mercator()
+    .scale(200)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+d3.csv('data/output2.csv', function (dataset){
+	//remittance from afghanistan
+	var afg = [];
+	for(var i = 0; i < dataset.length; ++i){
+		afg[i] = dataset[i][countries[0]];
+	}
+	var color = d3.scale.linear().domain([d3.min(afg),d3.max(afg)]).range(['#59473C', '#B3BF56']);
+	d3.json("data/world.json", function (error, world) {
+		svg.selectAll("path")
+			.data(topojson.feature(world, world.objects.places).features)
+			.enter().append("path")
+			.attr("d", path)
+			.attr('fill', function (d, i) {
+				var index = countries.indexOf(d.properties.name);
+				if (index != -1 && index < afg.length) {
+					return color(afg[index]);
+				}
+				else {
+					return 'red';
+				}
+			})
+			.on("mouseover", function(d, i){
+                var tooltip = d3.select("#world-tooltip");
+                tooltip.html('<div>' + d.properties.name + '</div>' + '<div>' + afg[countries.indexOf(d.properties.name)] + '</div>');
+                tooltip.style("visibility", "visible");
+            })
+            .on("mousemove", function(){
+                var tooltip = d3.select("#world-tooltip");
+                var yReduce = parseInt(tooltip.style("height")) + 40;
+                var xReduce = parseInt(tooltip.style("width")) / 2;
+                tooltip.style("top", (d3.event.pageY- yReduce)+"px").style("left",(d3.event.pageX-xReduce)+"px");
+            })
+            .on("mouseout", function(){
+                var tooltip = d3.select("#world-tooltip");
+                tooltip.style("visibility", "hidden");
+            });
+
+        svg.append("path")
+		    .datum(topojson.mesh(world, world.objects.places))
+		    .attr("d", path)
+		    .attr("class", "subunit-boundary");
+	});
+});
+</script>
+</body>
