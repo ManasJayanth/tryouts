@@ -110,6 +110,8 @@ d3.csv('data/output2.csv', function (dataset){
 	}
 	//---- Setting up the color scale
 	var color = d3.scale.linear().domain([d3.min(afg),d3.max(afg)]).range(['#59473C', '#B3BF56']);
+	//---- Opacity scale
+	var opacity = d3.scale.linear().domain([d3.min(afg),d3.max(afg)]).range([0.5, 1]);
 
 	//--- Reading TopoJSON file
 	d3.json("data/world.json", function (error, world) {
@@ -120,12 +122,27 @@ d3.csv('data/output2.csv', function (dataset){
 			.attr('fill', function (d, i) {
 				var index = countries.indexOf(d.properties.name);
 				// If Country name according to TopoJSON file is the found in countries list, apply color scale
-				if (index != -1 && index < afg.length) {
+				/*if (index != -1 && index < afg.length) {
 					return color(afg[index]);
+				}*/
+				// If Country name according to TopoJSON file is the found in countries list, apply color
+				if (index != -1 && index < afg.length) {
+					return "#59473C";
 				}
+
 				// else undefined, hence return red
 				else {
 					return 'red';
+				}
+			})
+			.style('opacity', function (d, i) {
+				var index = countries.indexOf(d.properties.name);
+				if (index != -1 && index < afg.length) {
+					return opacity(afg[index]);
+				}
+				else
+				{
+					return 1;
 				}
 			})
 			// Associating tooltip to mouse events
