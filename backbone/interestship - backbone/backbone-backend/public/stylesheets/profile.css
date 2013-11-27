@@ -1,0 +1,56 @@
+/**
+Colors: #121212 (black)
+		
+*/
+
+body {
+	background-color: #FFFFFF;
+}
+
+.container{
+	width: 900px;
+}
+
+#profile-header-holder {
+	margin-bottom: -80px; /* Dont know why */
+}
+
+#cover {
+	height: 300px;
+	width: 900px;
+	margin-top: 60px;
+}
+
+#dp{
+	position: relative;
+	top: -200px;
+	left: 400px;
+	height: 100px;
+	width: 100px;
+}
+
+.nav-tabs.nav-justified > li > a{
+	color: #FFFEF1;
+	border-style:  none;
+	background-color: #222222;
+}
+
+.nav-tabs.nav-justified > .active > a,
+.nav-tabs.nav-justified > .active > a:hover,
+.nav-tabs.nav-justified > .active > a:focus,
+.nav-tabs.nav-justified > li > .active > a,
+.nav-tabs.nav-justified > li > .active > a:focus,
+.nav-tabs.nav-justified > li > a:hover{
+	color: #FFFEF1;
+	background-color: #000000;
+	border:  none;
+}
+
+/** use js to turn a link active */
+
+#link-space {
+	height: 200px;
+	width: 100%;
+	background-color: 
+	margin-top: 20px;
+}
