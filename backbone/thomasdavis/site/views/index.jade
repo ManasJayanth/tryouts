@@ -1,0 +1,68 @@
+extends layout
+
+block head
+  link(rel='stylesheet', href='stylesheets/lib/bootstrap.css')
+
+block content
+  div.container
+
+    header
+          h1 User Manager
+
+    ul.nav.nav-tabs
+      li.active
+        a(href="#") Home
+      li
+        a(href="#new") New
+      li
+        a(href="#edit") Edit
+
+    div.page
+  
+
+  script#templ-id(type='text/template')
+    table.table.striped
+      thead 
+        tr
+          th First Name
+          th Age
+          th Band
+          th Edit
+      tbody
+        <% _.each(users, function(user) { %>
+        tr
+          td <%= user.get('name') %>
+          td <%= user.get('age') %>
+          td <%= user.get('band') %>
+          td 
+            a.btn.btn-primary(href!="#/edit/<%= user.id %>") Edit
+            a.btn.btn-primary(href!="#/delete/<%= user.id %>") Delete
+        <% }); %>
+
+  script#edit-user(type='text/template')
+      form.new-user
+        div.form-group
+          label(for="name") Name
+          div
+            input.form-control#username(type="text", name="name",
+              placeholder="Enter user's name")
+
+          div.form-group
+            label(for="age") Age
+            div
+              input.form-control#email-id(type="text", name="age",
+                placeholder="Enter his/her age")
+
+            div.form-group
+              label(for="band") Band
+              div
+                input.form-control#user-password(type="text", name="band",
+                  placeholder="Enter her/his favourite band")
+              
+        button.btn.btn-default(type="submit") Add
+      
+  script(src='javascripts/lib/jquery.js')
+  script(src='javascripts/lib/underscore.js')
+  script(src='javascripts/lib/backbone.js')
+  script(src='javascripts/code.js')
+  
